@@ -1,8 +1,10 @@
 from django.shortcuts import render
-from django.http import JsonResponse
-from .necklace_predictor import NecklaceDemo
+from django.http import JsonResponse, HttpResponse
+from .necklace_demo import overlay_necklace
 from PIL import Image
 import base64
+import io
+
 
 def uploadImage(request):
   if request.method == "GET":
@@ -16,6 +18,12 @@ def uploadImage(request):
 
       pad = len(imgData)%4
       imgData += "="*(0 if pad == 0 else 4-pad)
-      with open("imageToSave.png", "wb") as fh:
-        fh.write(base64.b64decode(imgData))
+
+      # Process the image.
+      result = overlay_necklace(Image.open(io.BytesIO(base64.b64decode(imgData))))
+      if result != None:
+        resp = HttpResponse(result, content_type="image/gif")
+        resp['Content-Length'] = len(result)
+        return resp
+      break
     return JsonResponse({"result": "success"})
