@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from .necklace_demo import overlay_necklace
 from PIL import Image
 import base64
@@ -22,8 +22,8 @@ def uploadImage(request):
       # Process the image.
       result = overlay_necklace(Image.open(io.BytesIO(base64.b64decode(imgData))))
       if result != None:
-        resp = HttpResponse(result, content_type="image/gif")
-        resp['Content-Length'] = len(result)
-        return resp
+        resBytes = base64.b64encode(result)
+        resStr = resBytes.decode('utf-8')
+        return JsonResponse({'data': resStr})
       break
-    return JsonResponse({"result": "success"})
+    return JsonResponse({'data': ''})

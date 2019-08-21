@@ -207,6 +207,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize);
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+    const blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+};
 let NecklaceComponent = class NecklaceComponent {
     constructor(changeDetectorRef, http) {
         this.changeDetectorRef = changeDetectorRef;
@@ -255,16 +270,21 @@ let NecklaceComponent = class NecklaceComponent {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'X-CSRFToken': csrfToken,
                 }),
-                responseType: 'blob',
             };
             this.http.post("http://localhost:8000/demo/upload/", this.canvas.nativeElement.toDataURL("image/png"), HTTP_OPTIONS)
-                .subscribe(blob => {
+                .subscribe(resp => {
                 var ctx = this.canvas.nativeElement.getContext("2d");
                 var img = new Image();
                 img.onload = function () {
                     ctx.drawImage(img, 0, 0);
                 };
-                img.src = URL.createObjectURL(blob);
+                if (resp["data"] != "") {
+                    const blob = b64toBlob(resp["data"], "image/png");
+                    img.src = URL.createObjectURL(blob);
+                }
+                else {
+                    console.log("Sorry! Couldn't fit the necklace");
+                }
             }, err => {
                 console.log("POST image error: ", err);
             });
