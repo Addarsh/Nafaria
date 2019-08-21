@@ -1,5 +1,4 @@
 ui/
-demo/__pycache__/
-necklace/__pycache__/
+.pyc
 .DS_Store
 

@@ -256,14 +256,14 @@ let NecklaceComponent = class NecklaceComponent {
                     'X-CSRFToken': csrfToken,
                 })
             };
-            this.http.post("http://localhost:8000/demo/upload/", this.canvas.nativeElement.toDataURL(), HTTP_OPTIONS)
+            this.http.post("http://localhost:8000/demo/upload/", this.canvas.nativeElement.toDataURL("image/png"), HTTP_OPTIONS)
                 .subscribe(resp => {
-                console.log("HTTP response: ", resp);
+                console.log("POST response: ", resp);
             }, err => {
-                console.log("http error: ", err);
+                console.log("POST image error: ", err);
             });
         }, err => {
-            console.log("GET received error: ", err);
+            console.log("GET image error: ", err);
         });
     }
 };
