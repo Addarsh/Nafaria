@@ -229,8 +229,8 @@ let NecklaceComponent = class NecklaceComponent {
         this.width = "";
         this.height = "";
         this.webRTC = false;
-        this.width = "480";
-        this.height = "640";
+        this.width = "1280";
+        this.height = "720";
         this.webRTC = false;
     }
     ngOnInit() { }
