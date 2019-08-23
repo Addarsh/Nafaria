@@ -11,8 +11,8 @@ def croppedImage(img):
     return img
 
   x = int((w-480)/2)
-  y = max(h-600, 0)
-  return img.crop((x, y, 480+x, 600+y))
+  y = max(h-640, 0)
+  return img.crop((x, y, 480+x, 640+y))
 
 
 def uploadImage(request):
