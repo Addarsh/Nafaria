@@ -12,7 +12,7 @@ INPUT_IMG_DIR = "/Users/addarsh/virtualenvs/necklace/datasets/necklace_test"
 OUTPUT_DIR = "/Users/addarsh/virtualenvs/necklace/datasets/necklace/output"
 NECKLACE_IMG_DIR = "/Users/addarsh/virtualenvs/necklace/datasets/necklace/images"
 
-def overlay_necklace(im):
+def overlay_necklace(im, necklaceName):
   # update the config options with the config file
   cfg.merge_from_file("/Users/addarsh/virtualenvs/necklace/maskrcnn-benchmark/configs/necklace_keypoint_rcnn_R_50_FPN_1x.yaml")
   # manual override some options
@@ -32,7 +32,7 @@ def overlay_necklace(im):
     print ("Could not find any keypoints; try again")
     return None
 
-  necklaceDir = os.path.join(NECKLACE_IMG_DIR, "2")
+  necklaceDir = os.path.join(NECKLACE_IMG_DIR, necklaceName)
 
   # Find necklace size depending on neck keypoint length.
   sizeDir = str(int(round(nkList[1][0] - nkList[0][0])))

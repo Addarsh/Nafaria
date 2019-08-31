@@ -4,6 +4,7 @@ from .necklace_demo import overlay_necklace
 from PIL import Image
 import base64
 import io
+import json
 
 def croppedImage(img):
   w, h = img.size
@@ -19,23 +20,22 @@ def uploadImage(request):
   if request.method == "GET":
     return render(request, "csrf.html", content_type='text/xml; charset=utf-8')
   elif request.method == "POST":
-    for k in request.POST:
-      if not k.startswith("base64,"):
-        continue
-      imgData = k.partition(",")[2]
-      imgData = imgData.replace(" ", "+")
+    data = json.loads(request.body)
 
-      pad = len(imgData)%4
-      imgData += "="*(0 if pad == 0 else 4-pad)
+    imgData = data["data"].split("base64,")[1]
+    imgData = imgData.replace(" ", "+")
 
-      # Crop Image to 480 by 640.
-      cImage = croppedImage(Image.open(io.BytesIO(base64.b64decode(imgData))))
+    pad = len(imgData)%4
+    imgData += "="*(0 if pad == 0 else 4-pad)
 
-      # Process the image.
-      result = overlay_necklace(cImage)
-      if result != None:
-        resBytes = base64.b64encode(result)
-        resStr = resBytes.decode('utf-8')
-        return JsonResponse({'data': resStr})
-      break
+    # Crop Image to 480 by 640.
+    cImage = croppedImage(Image.open(io.BytesIO(base64.b64decode(imgData))))
+
+    # Process the image.
+    result = overlay_necklace(cImage, data["necklace"])
+    if result != None:
+      resBytes = base64.b64encode(result)
+      resStr = resBytes.decode('utf-8')
+      return JsonResponse({'data': resStr})
+
     return JsonResponse({'data': ''})
