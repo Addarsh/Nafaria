@@ -36,7 +36,7 @@ def overlay_necklace(im, necklaceName):
 
   # Find necklace size depending on neck keypoint length.
   sizeDir = str(int(round(nkList[1][0] - nkList[0][0])))
-  print ("Choosing sizeDir: ", sizeDir)
+  print ("Choosing necklace size: ", sizeDir)
   neckim = Image.open(os.path.join(os.path.join(necklaceDir, sizeDir), "image.jpg"))
   maskim = None
   try:

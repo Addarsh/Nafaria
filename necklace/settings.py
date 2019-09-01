@@ -22,10 +22,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '8=p5v4)r@x!1ic0-34cj2@1*#x%0clctom&+rz(x9*wqme+prp'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if 'RDS_HOSTNAME' not in os.environ:
+  # SECURITY WARNING: don't run with debug turned on in production!
+  DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+  "localhost",
+  "nefaria-env.fbtffkbpmf.us-west-2.elasticbeanstalk.com"]
 
 
 # Application definition
@@ -77,16 +80,28 @@ WSGI_APPLICATION = 'necklace.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'necklace',
-        'USER': 'django',
-        'PASSWORD': 'unchained',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
+if 'RDS_HOSTNAME' in os.environ:
+  DATABASES = {
+      'default': {
+          'ENGINE': 'django.db.backends.postgresql',
+          'NAME': os.environ['RDS_DB_NAME'],
+          'USER': os.environ['RDS_USERNAME'],
+          'PASSWORD': os.environ['RDS_PASSWORD'],
+          'HOST': os.environ['RDS_HOSTNAME'],
+          'PORT': os.environ['RDS_PORT'],
+      }
+  }
+else:
+  DATABASES = {
+      'default': {
+          'ENGINE': 'django.db.backends.postgresql',
+          'NAME': 'necklace',
+          'USER': 'django',
+          'PASSWORD': 'unchained',
+          'HOST': '127.0.0.1',
+          'PORT': '5432',
+      }
+  }
 
 
 # Password validation
@@ -113,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'US/Pacific'
 
 USE_I18N = True
 
@@ -127,9 +142,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'spa.storage.SPAStaticFilesStorage'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+if 'RDS_HOSTNAME' in os.environ:
+  STATIC_ROOT= 'static'
+else:
+  STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    '/var/www/static/',
-]
+  STATICFILES_DIRS = [
+      os.path.join(BASE_DIR, "static"),
+      '/var/www/static/',
+  ]

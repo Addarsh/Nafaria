@@ -327,7 +327,7 @@ class NecklaceDemo(object):
 
 import numpy as np
 import matplotlib.pyplot as plt
-from maskrcnn_benchmark.structures.keypoint import NecklaceKeypoints
+from .keypoint import NecklaceKeypoints
 
 def vis_keypoints(img, kps, kp_thresh=2, alpha=0.7):
     """Visualizes keypoints (adapted from vis_one_image).
@@ -374,10 +374,6 @@ def vis_keypoints(img, kps, kp_thresh=2, alpha=0.7):
     if len(nkList) != 2:
       print ("Couldn't find all keypoints, find keypoints again")
       nkList = []
-    else:
-      print ("Left point: ", nkList[0])
-      print ("Right point: ", nkList[1])
-      print ("Neck length: ", nkList[1][0] - nkList[0][0])
 
     # Blend the keypoints.
     return cv2.addWeighted(img, 1.0 - alpha, kp_mask, alpha, 0), nkList
