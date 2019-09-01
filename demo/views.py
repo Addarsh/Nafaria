@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from .necklace_demo import overlay_necklace
+from .models import UserInfo
 from PIL import Image
 import base64
 import io
@@ -39,3 +40,12 @@ def uploadImage(request):
       return JsonResponse({'data': resStr})
 
     return JsonResponse({'data': ''})
+
+def signUp(request):
+  if request.method == "GET":
+    return render(request, "csrf.html", content_type='text/xml; charset=utf-8')
+  elif request.method == "POST":
+    data = json.loads(request.body)
+    user = UserInfo(email=data["email"], comments=data["comments"])
+    user.save()
+    return JsonResponse({})
