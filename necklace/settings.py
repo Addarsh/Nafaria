@@ -29,6 +29,7 @@ if 'RDS_HOSTNAME' not in os.environ:
 ALLOWED_HOSTS = [
   "localhost",
   "nefaria-env.fbtffkbpmf.us-west-2.elasticbeanstalk.com",
+  ".nafaria.com",
 ]
 
 
@@ -103,6 +104,49 @@ else:
           'PORT': '5432',
       }
   }
+
+if 'RDS_HOSTNAME' in os.environ:
+  LOG_FILE = '/var/log/app-logs/django.log'
+else:
+  LOG_FILE = 'app-logs/django.log'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+       'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(asctime)s : module %(name)s : %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'simple',
+            'filename': LOG_FILE,
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'demo.views': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'demo.necklace_demo': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 
 # Password validation

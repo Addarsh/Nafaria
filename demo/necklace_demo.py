@@ -1,6 +1,7 @@
 import os
 import json
 import io
+import logging
 
 from PIL import Image
 import numpy as np
@@ -8,13 +9,16 @@ import numpy as np
 from maskrcnn_benchmark.config import cfg
 from .predictor import NecklaceDemo
 
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
 NECKLACE_IMG_DIR = ""
 CONFIG_FILE = ""
 MODEL_FILE = ""
 if 'RDS_HOSTNAME' in os.environ:
-  NECKLACE_IMG_DIR = "/home/ec2-user/output/"
-  CONFIG_FILE = "/home/ec2-user/output/necklace_keypoint_rcnn_R_50_FPN_1x.yaml"
-  MODEL_FILE = "/home/ec2-user/output"
+  NECKLACE_IMG_DIR = "/tmp/output/"
+  CONFIG_FILE = "/tmp/output/necklace_keypoint_rcnn_R_50_FPN_1x.yaml"
+  MODEL_FILE = "/tmp/output"
 else:
   NECKLACE_IMG_DIR = "/Users/addarsh/virtualenvs/necklace/datasets/necklace/images"
   CONFIG_FILE = "/Users/addarsh/virtualenvs/necklace/maskrcnn-benchmark/configs/necklace_keypoint_rcnn_R_50_FPN_1x.yaml"
@@ -35,24 +39,19 @@ def overlay_necklace(im, necklaceName):
   )
 
   predictions, nkList = necklace_demo.run_on_opencv_image(np.array(im)[:, :, [2, 1, 0]])
+  logger.info("necklace keypoint list length: ", len(nkList))
 
   if len(nkList) == 0:
-    print ("Could not find any keypoints; try again")
+    logger.error("Could not find any keypoints for given image with necklaceName: %s", necklaceName)
     return None
 
   necklaceDir = os.path.join(NECKLACE_IMG_DIR, necklaceName)
 
   # Find necklace size depending on neck keypoint length.
   sizeDir = str(int(round(nkList[1][0] - nkList[0][0])))
-  print ("Choosing necklace size: ", sizeDir)
+  logger.info("Choosing necklace size: %s", sizeDir)
   neckim = Image.open(os.path.join(os.path.join(necklaceDir, sizeDir), "image.jpg"))
-  maskim = None
-  try:
-    maskim = Image.open(os.path.join(os.path.join(necklaceDir, sizeDir), "mask.jpg"))
-  except Exception:
-    maskim = neckim.convert('L')
-    # Create directory.
-    maskim.save(os.path.join(os.path.join(necklaceDir, sizeDir), "mask.jpg"))
+  maskim = neckim.convert('L')
 
   necklaceOffset = []
   # Read Necklace offset point.
