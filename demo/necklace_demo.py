@@ -8,16 +8,24 @@ import numpy as np
 from maskrcnn_benchmark.config import cfg
 from .predictor import NecklaceDemo
 
-INPUT_IMG_DIR = "/Users/addarsh/virtualenvs/necklace/datasets/necklace_test"
-OUTPUT_DIR = "/Users/addarsh/virtualenvs/necklace/datasets/necklace/output"
-NECKLACE_IMG_DIR = "/Users/addarsh/virtualenvs/necklace/datasets/necklace/images"
+NECKLACE_IMG_DIR = ""
+CONFIG_FILE = ""
+MODEL_FILE = ""
+if 'RDS_HOSTNAME' in os.environ:
+  NECKLACE_IMG_DIR = "/home/ec2-user/output/"
+  CONFIG_FILE = "/home/ec2-user/output/necklace_keypoint_rcnn_R_50_FPN_1x.yaml"
+  MODEL_FILE = "/home/ec2-user/output"
+else:
+  NECKLACE_IMG_DIR = "/Users/addarsh/virtualenvs/necklace/datasets/necklace/images"
+  CONFIG_FILE = "/Users/addarsh/virtualenvs/necklace/maskrcnn-benchmark/configs/necklace_keypoint_rcnn_R_50_FPN_1x.yaml"
+  MODEL_FILE = "/Users/addarsh/virtualenvs/necklace/maskrcnn-benchmark/output"
 
 def overlay_necklace(im, necklaceName):
   # update the config options with the config file
-  cfg.merge_from_file("/Users/addarsh/virtualenvs/necklace/maskrcnn-benchmark/configs/necklace_keypoint_rcnn_R_50_FPN_1x.yaml")
+  cfg.merge_from_file(CONFIG_FILE)
   # manual override some options
   cfg.merge_from_list(["MODEL.DEVICE", "cpu"])
-  cfg.merge_from_list(["OUTPUT_DIR", "/Users/addarsh/virtualenvs/necklace/maskrcnn-benchmark/output"])
+  cfg.merge_from_list(["OUTPUT_DIR", MODEL_FILE])
 
   # compute predictions
   necklace_demo = NecklaceDemo(

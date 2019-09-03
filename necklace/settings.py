@@ -28,7 +28,8 @@ if 'RDS_HOSTNAME' not in os.environ:
 
 ALLOWED_HOSTS = [
   "localhost",
-  "nefaria-env.fbtffkbpmf.us-west-2.elasticbeanstalk.com"]
+  "nefaria-env.fbtffkbpmf.us-west-2.elasticbeanstalk.com",
+]
 
 
 # Application definition
