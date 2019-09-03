@@ -379,8 +379,6 @@ const ERR_STR = "Sorry! Couldn't fit the necklace. Things you can try: " +
     "1. Improve lighting conditions " +
     "2. Make the neck more visible " +
     "3. Try to be in the middle of the picture.";
-const BACKEND_UPLOAD_IMAGE_URL = "http://localhost:8000/demo/upload/";
-const BACKEND_SIGNUP_URL = "http://localhost:8000/demo/signup/";
 const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
@@ -410,10 +408,14 @@ let NecklaceComponent = class NecklaceComponent {
         this.downloadPic = false;
         this.innerWidth = 0;
         this.selectedNecklace = "";
+        this.imageURL = "";
+        this.signUpURL = "";
         this.record = false;
         this.loading = false;
         this.downloadPic = false;
         this.selectedNecklace = "1";
+        this.imageURL = window.location.href + "demo/upload/";
+        this.signUpURL = window.location.href + "demo/signup/";
     }
     ngOnInit() {
         this.innerWidth = quadratic(window.innerWidth);
@@ -457,14 +459,14 @@ let NecklaceComponent = class NecklaceComponent {
         tempCanvas.getContext("2d").drawImage(this.video.nativeElement, 0, 0, 1280, 720);
         this.disableDemo();
         this.loading = true;
-        this.http.get(BACKEND_UPLOAD_IMAGE_URL, { responseType: 'text' }).subscribe(resp => {
+        this.http.get(this.imageURL, { responseType: 'text' }).subscribe(resp => {
             const HTTP_OPTIONS = {
                 headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'X-CSRFToken': this.getCSRFToken(resp),
                 }),
             };
-            this.http.post(BACKEND_UPLOAD_IMAGE_URL, {
+            this.http.post(this.imageURL, {
                 "necklace": this.selectedNecklace,
                 "data": tempCanvas.toDataURL("image/png"),
             }, HTTP_OPTIONS)
@@ -518,14 +520,14 @@ let NecklaceComponent = class NecklaceComponent {
         this.selectedNecklace = event.value;
     }
     onSignUp(event) {
-        this.http.get(BACKEND_SIGNUP_URL, { responseType: 'text' }).subscribe(resp => {
+        this.http.get(this.signUpURL, { responseType: 'text' }).subscribe(resp => {
             const HTTP_OPTIONS = {
                 headers: new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
                     'Content-Type': 'application/x-www-form-urlencode',
                     'X-CSRFToken': this.getCSRFToken(resp),
                 }),
             };
-            this.http.post(BACKEND_SIGNUP_URL, event, HTTP_OPTIONS)
+            this.http.post(this.signUpURL, event, HTTP_OPTIONS)
                 .subscribe(resp => {
                 this._snackBar.open("Successfully signed up!", "", {
                     duration: 7000,
