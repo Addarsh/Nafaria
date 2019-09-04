@@ -63,7 +63,7 @@ module.exports = "<h1 mat-dialog-title>An Error occurred</h1>\n<div mat-dialog-c
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar id=\"toolbar\">Nafaria</mat-toolbar>\n<div class=\"call\">\n  <img src=\"assets/woman.jpg\">\n  <div id=\"call-content\">\n    <h1>Wear Necklaces at home</h1>\n    <h2>Try before you buy</h2>\n  </div>\n</div>\n<mat-grid-list class=\"info\" cols=\"3\" rowHeight=\"15vw\">\n  <mat-grid-tile>\n    <div>\n      <a href=\"#necklace-options\"><h1>Choose</h1></a>\n    </div>\n  </mat-grid-tile>\n  <mat-grid-tile>\n    <div>\n      <a href=\"#necklace-options\"><h1>Wear</h1></a>\n    </div>\n  </mat-grid-tile>\n  <mat-grid-tile>\n    <div>\n      <a href=\"#necklace-options\"><h1>Buy</h1></a>\n    </div>\n  </mat-grid-tile>\n</mat-grid-list>\n<div class=\"pane\">\n  <mat-accordion>\n    <mat-vertical-stepper (selectionChange)=\"stepperChange($event)\" linear=true  #stepper >\n      <mat-step label=\"Select Necklace\">\n        <mat-radio-group id=\"necklace-options\" (change)=\"selectionChange($event)\">\n          <div class=\"necklace-pic\">\n            <img src=\"assets/necklace-collection/1.jpg\">\n            <mat-radio-button value=\"1\" [checked]=true></mat-radio-button>\n          </div>\n          <div class=\"necklace-pic\">\n            <img src=\"assets/necklace-collection/2.jpg\">\n            <mat-radio-button value=\"2\"></mat-radio-button>\n          </div>\n          <div class=\"necklace-pic\">\n            <img src=\"assets/necklace-collection/3.jpg\">\n            <mat-radio-button value=\"3\"></mat-radio-button>\n          </div>\n        </mat-radio-group>\n      </mat-step>\n      <mat-step label=\"Snap photo\">\n        <div *ngIf=\"record\">\n          <div id=\"instructions\">\n            <p>* We <b style=\"color:red;\">DO NOT</b>  store the video stream from your camera. It is solely used for clicking a picture.</p>\n            <p>* We <b style=\"color:red;\">DO NOT</b> store the captured picture.</p>\n            <h3>* For <b style=\"color:blue;\">BEST</b> results, look straight at the camera with your <b style=\"color:blue;\">NECK VISIBLE</b> and <b style=\"color:blue;\">WELL LIT</b> sorroundings. And make sure to smile. :)</h3>\n          </div>\n          <video #video id=\"video\" width=\"1280\" height=\"720\" autoplay muted playsinline [style.margin-left.px]=\"innerWidth\"></video>\n          <button id=\"capture-btn\" mat-raised-button (click)=\"capture()\" matStepperNext>Capture</button>\n        </div>\n      </mat-step>\n      <mat-step label=\"Results!\">\n        <div class=\"progressBar\" *ngIf=\"loading\"><mat-progress-bar mode=\"indeterminate\"></mat-progress-bar></div>\n        <div id=\"results\"  *ngIf=\"downloadPic\">\n          <div id=\"result-canvas\">\n            <canvas #canvas width=\"480\" height=\"640\"></canvas>\n            <button mat-raised-button (click)=\"download()\">Download</button>\n          </div>\n        </div>\n      </mat-step>\n    </mat-vertical-stepper>\n  </mat-accordion>\n  <div id=\"final-msg\">\n    <div id=\"user-text\">\n      <h2>Interested in learning more?</h2>\n      <h2>Leave your email and any comments or feedback.</h2>\n      <h2>Stay tuned!</h2>\n    </div>\n    <user-details (formSubmit)=\"onSignUp($event)\"></user-details>\n  </div>\n</div>\n<mat-toolbar id=\"privacy-policy\">\n  <a href=\"https://app.termly.io/document/privacy-policy/67f50e31-f977-48f9-bc9c-cb93c19eb75f\" target=\"_blank\">Privacy Policy</a>\n  <p>Copyright &copy; 2019, Nafaria</p>\n</mat-toolbar>\n"
+module.exports = "<mat-toolbar id=\"toolbar\">Nafaria</mat-toolbar>\n<div class=\"call\">\n  <img src=\"assets/woman.jpg\">\n  <div id=\"call-content\">\n    <h1>Wear Necklaces at home</h1>\n    <h2>Try before you buy</h2>\n  </div>\n</div>\n<mat-grid-list class=\"info\" cols=\"3\" rowHeight=\"15vw\">\n  <mat-grid-tile>\n    <div>\n      <a href=\"#necklace-options\"><h1>Choose</h1></a>\n    </div>\n  </mat-grid-tile>\n  <mat-grid-tile>\n    <div>\n      <a href=\"#necklace-options\"><h1>Wear</h1></a>\n    </div>\n  </mat-grid-tile>\n  <mat-grid-tile>\n    <div>\n      <a href=\"#necklace-options\"><h1>Buy</h1></a>\n    </div>\n  </mat-grid-tile>\n</mat-grid-list>\n<div class=\"pane\">\n  <mat-accordion>\n    <mat-vertical-stepper (selectionChange)=\"stepperChange($event)\" linear=true  #stepper >\n      <mat-step label=\"Select Necklace\">\n        <mat-radio-group id=\"necklace-options\" (change)=\"selectionChange($event)\">\n          <div class=\"necklace-pic\">\n            <img src=\"assets/necklace-collection/1.jpg\">\n            <mat-radio-button value=\"1\" [checked]=true></mat-radio-button>\n          </div>\n          <div class=\"necklace-pic\">\n            <img src=\"assets/necklace-collection/2.jpg\">\n            <mat-radio-button value=\"2\"></mat-radio-button>\n          </div>\n          <div class=\"necklace-pic\">\n            <img src=\"assets/necklace-collection/3.jpg\">\n            <mat-radio-button value=\"3\"></mat-radio-button>\n          </div>\n        </mat-radio-group>\n      </mat-step>\n      <mat-step label=\"Snap photo\">\n        <div *ngIf=\"record\">\n          <div id=\"instructions\">\n            <p>* We <b style=\"color:red;\">DO NOT</b>  store the video stream from your camera. It is solely used for clicking a picture.</p>\n            <p>* We <b style=\"color:red;\">DO NOT</b> store the captured picture.</p>\n            <h3>* For <b style=\"color:blue;\">BEST</b> results, look straight at the camera with your <b style=\"color:blue;\">NECK VISIBLE</b> and <b style=\"color:blue;\">WELL LIT</b> sorroundings. And make sure to smile. :)</h3>\n          </div>\n          <video #video id=\"video\" width=\"videoWidth.toString()\" height=\"videoHeight.toString()\" autoplay muted playsinline [style.margin-left.px]=\"innerWidth\"></video>\n          <button id=\"capture-btn\" mat-raised-button (click)=\"capture()\" matStepperNext>Capture</button>\n        </div>\n      </mat-step>\n      <mat-step label=\"Results!\">\n        <div class=\"progressBar\" *ngIf=\"loading\"><mat-progress-bar mode=\"indeterminate\"></mat-progress-bar></div>\n        <div id=\"results\"  *ngIf=\"downloadPic\">\n          <div id=\"result-canvas\">\n            <canvas #canvas width=\"480\" height=\"640\"></canvas>\n            <button mat-raised-button (click)=\"download()\">Download</button>\n          </div>\n        </div>\n      </mat-step>\n    </mat-vertical-stepper>\n  </mat-accordion>\n  <div id=\"final-msg\">\n    <div id=\"user-text\">\n      <h2>Interested in learning more?</h2>\n      <h2>Leave your email and any comments or feedback.</h2>\n      <h2>Stay tuned!</h2>\n    </div>\n    <user-details (formSubmit)=\"onSignUp($event)\"></user-details>\n  </div>\n</div>\n<mat-toolbar id=\"privacy-policy\">\n  <a href=\"https://app.termly.io/document/privacy-policy/67f50e31-f977-48f9-bc9c-cb93c19eb75f\" target=\"_blank\">Privacy Policy</a>\n  <p>Copyright &copy; 2019, Nafaria</p>\n</mat-toolbar>\n"
 
 /***/ }),
 
@@ -397,6 +397,9 @@ const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
 const quadratic = (x) => {
     return -1.2939465 * Math.pow(10, -4) * x * x + 0.70246836 * x - 799.33031;
 };
+const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
 let NecklaceComponent = class NecklaceComponent {
     constructor(changeDetectorRef, http, dialog, _snackBar) {
         this.changeDetectorRef = changeDetectorRef;
@@ -410,6 +413,8 @@ let NecklaceComponent = class NecklaceComponent {
         this.selectedNecklace = "";
         this.imageURL = "";
         this.signUpURL = "";
+        this.videoWidth = 0;
+        this.videoHeight = 0;
         this.record = false;
         this.loading = false;
         this.downloadPic = false;
@@ -419,6 +424,14 @@ let NecklaceComponent = class NecklaceComponent {
     }
     ngOnInit() {
         this.innerWidth = quadratic(window.innerWidth);
+        if (isMobile()) {
+            this.videoWidth = 720;
+            this.videoHeight = 1280;
+        }
+        else {
+            this.videoWidth = 1280;
+            this.videoHeight = 720;
+        }
     }
     onResize(event) {
         this.innerWidth = quadratic(window.innerWidth);
@@ -429,8 +442,8 @@ let NecklaceComponent = class NecklaceComponent {
             navigator.mediaDevices.getUserMedia({
                 video: {
                     facingMode: "user",
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 },
+                    width: { ideal: this.videoWidth },
+                    height: { ideal: this.videoHeight },
                 },
             }).then(stream => {
                 this.record = true;
@@ -453,9 +466,9 @@ let NecklaceComponent = class NecklaceComponent {
     }
     capture() {
         const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = 1280;
-        tempCanvas.height = 720;
-        tempCanvas.getContext("2d").drawImage(this.video.nativeElement, 0, 0);
+        tempCanvas.width = 480;
+        tempCanvas.height = 640;
+        tempCanvas.getContext("2d").drawImage(this.video.nativeElement, (this.videoWidth - 480) / 2, 0, 480, 640, 0, 0, 480, 640);
         this.disableDemo();
         this.loading = true;
         this.http.get(this.imageURL, { responseType: 'text' }).subscribe(resp => {

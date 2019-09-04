@@ -11,20 +11,6 @@ import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-def croppedImage(img):
-  w, h = img.size
-  logger.info("Received image: width %s, height %s", w, h)
-  # Temp change: Remove ASAP.
-  img.save("/tmp/test.png", "PNG")
-
-  if w <= 480:
-    return img
-
-  x = int((w-480)/2)
-  y = max(h-640, 0)
-  return img.crop((x, y, 480+x, 640+y))
-
-
 def uploadImage(request):
   if request.method == "GET":
     return render(request, "csrf.html", content_type='text/xml; charset=utf-8')
@@ -41,7 +27,8 @@ def uploadImage(request):
       imgData += "="*(0 if pad == 0 else 4-pad)
 
       # Crop Image to 480 by 640.
-      cImage = croppedImage(Image.open(io.BytesIO(base64.b64decode(imgData))))
+      cImage = Image.open(io.BytesIO(base64.b64decode(imgData)))
+      cImage.save("/tmp/test.png", "PNG")
 
       # Process the image.
       result = overlay_necklace(cImage, data["necklace"])
