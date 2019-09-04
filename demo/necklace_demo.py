@@ -39,7 +39,7 @@ def overlay_necklace(im, necklaceName):
   )
 
   predictions, nkList = necklace_demo.run_on_opencv_image(np.array(im)[:, :, [2, 1, 0]])
-  logger.info("necklace keypoint list length: ", len(nkList))
+  logger.info("necklace keypoint list length: %s", len(nkList))
 
   if len(nkList) == 0:
     logger.error("Could not find any keypoints for given image with necklaceName: %s", necklaceName)

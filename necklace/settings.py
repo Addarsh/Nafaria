@@ -145,6 +145,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'demo.predictor': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     },
 }
 
