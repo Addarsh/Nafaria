@@ -13,6 +13,10 @@ logger = logging.getLogger(__name__)
 
 def croppedImage(img):
   w, h = img.size
+  logger.info("Received image: width %s, height %s", w, h)
+  # Temp change: Remove ASAP.
+  img.save("/tmp/test.png", "PNG")
+
   if w <= 480:
     return img
 
