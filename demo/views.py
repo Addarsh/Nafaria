@@ -29,6 +29,7 @@ def uploadImage(request):
       # Crop Image to 480 by 640.
       cImage = Image.open(io.BytesIO(base64.b64decode(imgData)))
       cImage.save("/tmp/test.png", "PNG")
+      cImage.thumbnail((480, 640), Image.ANTIALIAS)
 
       # Process the image.
       result = overlay_necklace(cImage, data["necklace"])
