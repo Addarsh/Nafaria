@@ -423,18 +423,21 @@ let NecklaceComponent = class NecklaceComponent {
         this.signUpURL = window.location.href + "demo/signup/";
     }
     ngOnInit() {
-        this.innerWidth = quadratic(window.innerWidth);
         if (!isMobile()) {
             this.videoWidth = 1280;
             this.videoHeight = 720;
+            this.innerWidth = quadratic(window.innerWidth);
         }
         else {
-            this.videoWidth = 1280;
-            this.videoHeight = 1280;
+            this.videoWidth = 640;
+            this.videoHeight = 640;
+            this.innerWidth = -(window.innerWidth - 150);
         }
     }
     onResize(event) {
-        this.innerWidth = quadratic(window.innerWidth);
+        if (!isMobile()) {
+            this.innerWidth = quadratic(window.innerWidth);
+        }
     }
     enableDemo() {
         this.downloadPic = false;
@@ -466,16 +469,9 @@ let NecklaceComponent = class NecklaceComponent {
     }
     capture() {
         const tempCanvas = document.createElement('canvas');
-        if (!isMobile()) {
-            tempCanvas.width = 480;
-            tempCanvas.height = 640;
-            tempCanvas.getContext("2d").drawImage(this.video.nativeElement, (this.videoWidth - 480) / 2, 0, 480, 640, 0, 0, 480, 640);
-        }
-        else {
-            tempCanvas.width = 480;
-            tempCanvas.height = 640;
-            tempCanvas.getContext("2d").drawImage(this.video.nativeElement, 160, 0, 960, 1280, 0, 0, 480, 640);
-        }
+        tempCanvas.width = 480;
+        tempCanvas.height = 640;
+        tempCanvas.getContext("2d").drawImage(this.video.nativeElement, (this.videoWidth - 480) / 2, 0, 480, 640, 0, 0, 480, 640);
         this.disableDemo();
         this.loading = true;
         this.http.get(this.imageURL, { responseType: 'text' }).subscribe(resp => {

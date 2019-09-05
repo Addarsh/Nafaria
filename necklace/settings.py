@@ -30,6 +30,7 @@ ALLOWED_HOSTS = [
   "localhost",
   "nefaria-env.fbtffkbpmf.us-west-2.elasticbeanstalk.com",
   ".nafaria.com",
+  "www.nafaria.com",
 ]
 
 
