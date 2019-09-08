@@ -43,13 +43,18 @@ def overlay_necklace(im, necklaceName):
 
   if len(nkList) == 0:
     logger.error("Could not find any keypoints for given image with necklaceName: %s", necklaceName)
-    return None
+    return None, 0
 
   necklaceDir = os.path.join(NECKLACE_IMG_DIR, necklaceName)
 
   # Find necklace size depending on neck keypoint length.
   sizeDir = str(int(round(nkList[1][0] - nkList[0][0])))
   logger.info("Choosing necklace size: %s", sizeDir)
+
+  if not os.path.exists(os.path.join(os.path.join(necklaceDir, sizeDir), "image.jpg")):
+    logger.error("Could not find necklace size: %s for given image with necklaceName: %s", sizeDir, necklaceName)
+    return None, sizeDir
+
   neckim = Image.open(os.path.join(os.path.join(necklaceDir, sizeDir), "image.jpg"))
   maskim = neckim.convert('L')
 
@@ -65,4 +70,4 @@ def overlay_necklace(im, necklaceName):
 
   imgByteArr = io.BytesIO()
   imCopy.save(imgByteArr, format="PNG")
-  return imgByteArr.getvalue()
+  return imgByteArr.getvalue(), sizeDir

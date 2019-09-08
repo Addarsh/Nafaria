@@ -30,12 +30,12 @@ def uploadImage(request):
       cImage = Image.open(io.BytesIO(base64.b64decode(imgData)))
 
       # Process the image.
-      result = overlay_necklace(cImage, data["necklace"])
+      result, necklaceSize = overlay_necklace(cImage, data["necklace"])
       if result != None:
         resBytes = base64.b64encode(result)
         resStr = resBytes.decode('utf-8')
-        return JsonResponse({'data': resStr})
-      return JsonResponse({'data': ''})
+        return JsonResponse({'data': resStr, 'size': necklaceSize})
+      return JsonResponse({'data': '', 'size': necklaceSize})
     except Exception as e:
       logger.error("uploadImage.POST failed with exception: %s", e)
       return JsonResponse({'message': 'upload failed due to an error'}, status=500)

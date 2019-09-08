@@ -380,12 +380,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const ERR_STR = "Sorry! Couldn't fit the necklace. Things you can try: " +
-    "1. Improve lighting conditions " +
-    "2. Make the neck more visible " +
-    "3. Try to be in the middle of the picture.";
 // Event Category used for Google Analytics.
-const CLICK_CATEGORY = "Click";
 const ENGAGEMENT_CATEGORY = "engagement";
 const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
     const byteCharacters = atob(b64Data);
@@ -467,21 +462,21 @@ let NecklaceComponent = class NecklaceComponent {
                 this.changeDetectorRef.detectChanges();
                 this.video.nativeElement.srcObject = stream;
                 this.gtag.event('record_video', {
-                    event_category: CLICK_CATEGORY,
+                    event_category: ENGAGEMENT_CATEGORY,
                     event_label: 'User consented to record',
                 });
-            }).catch((err) => { this.showError("Error in access to camera: " + err.toString()); });
+            }).catch((err) => {
+                this.showError("Error in access to camera: " + err.toString());
+                this.gtag.event('reject_video', {
+                    event_category: ENGAGEMENT_CATEGORY,
+                    event_label: 'User rejected permission to record',
+                });
+            });
         }
         else if (!navigator.mediaDevices) {
             this.gtag.event('reject_video', {
-                event_category: CLICK_CATEGORY,
+                event_category: ENGAGEMENT_CATEGORY,
                 event_label: 'Media Device does not exist',
-            });
-        }
-        else {
-            this.gtag.event('reject_video', {
-                event_category: CLICK_CATEGORY,
-                event_label: 'User rejected permission to record',
             });
         }
     }
@@ -499,7 +494,7 @@ let NecklaceComponent = class NecklaceComponent {
     }
     capture() {
         this.gtag.event('snap_photo', {
-            event_category: CLICK_CATEGORY,
+            event_category: ENGAGEMENT_CATEGORY,
             event_label: 'Captured user picture',
         });
         const tempCanvas = document.createElement('canvas');
@@ -522,9 +517,30 @@ let NecklaceComponent = class NecklaceComponent {
                 .subscribe(resp => {
                 this.loading = false;
                 if (resp["data"] === "") {
-                    this.showError(ERR_STR);
+                    if (parseInt(resp["size"]) > 182) {
+                        this.showError("Sorry! You might be too CLOSE, please move further away and take a picture.");
+                        this.gtag.event('detection_error', {
+                            event_category: ENGAGEMENT_CATEGORY,
+                            event_label: 'User too close to camera',
+                            value: resp["size"],
+                        });
+                    }
+                    else {
+                        this.showError("Sorry! Could not detect your neck. Please make your neck is visible"
+                            + " or adjust lighting conditions.");
+                        this.gtag.event('detection_error', {
+                            event_category: ENGAGEMENT_CATEGORY,
+                            event_label: 'Neck Undetected',
+                            value: resp["size"],
+                        });
+                    }
                     return;
                 }
+                this.gtag.event('detection_success', {
+                    event_category: ENGAGEMENT_CATEGORY,
+                    event_label: 'Neck overlay success',
+                    value: resp["size"],
+                });
                 this.downloadPic = true;
                 const checkCanvas = setInterval(() => {
                     var ctx = this.canvas.nativeElement.getContext("2d");
@@ -554,6 +570,14 @@ let NecklaceComponent = class NecklaceComponent {
         });
     }
     download() {
+        let label = "Result Image Downloaded";
+        if (!this.bigScreen) {
+            label = "Result Image Shared";
+        }
+        this.gtag.event('use_result_image', {
+            event_category: ENGAGEMENT_CATEGORY,
+            event_label: label,
+        });
         const link = document.createElement('a');
         link.download = "virtual_necklace.png";
         link.target = '_blank';
@@ -577,7 +601,7 @@ let NecklaceComponent = class NecklaceComponent {
     selectionChange(event) {
         this.selectedNecklace = event.value;
         this.gtag.event('necklace_selection_change', {
-            event_category: CLICK_CATEGORY,
+            event_category: ENGAGEMENT_CATEGORY,
             event_label: this.selectedNecklace,
         });
     }
@@ -594,6 +618,10 @@ let NecklaceComponent = class NecklaceComponent {
                 this._snackBar.open("Successfully signed up!", "", {
                     duration: 7000,
                 });
+                this.gtag.event('user_signup', {
+                    event_category: ENGAGEMENT_CATEGORY,
+                    event_label: "User signed up",
+                });
             }, err => {
                 this.showError(err.error);
             });
@@ -601,7 +629,7 @@ let NecklaceComponent = class NecklaceComponent {
     }
     optionsClicked(nav) {
         this.gtag.event('page_navigation_clicked', {
-            event_category: CLICK_CATEGORY,
+            event_category: ENGAGEMENT_CATEGORY,
             event_label: nav,
         });
     }
