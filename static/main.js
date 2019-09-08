@@ -63,7 +63,7 @@ module.exports = "<h1 mat-dialog-title>An Error occurred</h1>\n<div mat-dialog-c
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar id=\"toolbar\">Nafaria</mat-toolbar>\n<div class=\"call\">\n  <img src=\"assets/woman.jpg\">\n  <div id=\"call-content\">\n    <h1>Wear Necklaces at home</h1>\n    <h2>Try before you buy</h2>\n  </div>\n</div>\n<mat-grid-list class=\"info\" cols=\"3\" rowHeight=\"15vw\">\n  <mat-grid-tile>\n    <div>\n      <a href=\"#necklace-options\"><h1>Choose</h1></a>\n    </div>\n  </mat-grid-tile>\n  <mat-grid-tile>\n    <div>\n      <a href=\"#necklace-options\"><h1>Wear</h1></a>\n    </div>\n  </mat-grid-tile>\n  <mat-grid-tile>\n    <div>\n      <a href=\"#necklace-options\"><h1>Buy</h1></a>\n    </div>\n  </mat-grid-tile>\n</mat-grid-list>\n<div class=\"pane\">\n  <ng-template #stepOne>\n    <mat-radio-group id=\"necklace-options\" (change)=\"selectionChange($event)\">\n      <div class=\"necklace-pic\">\n        <img src=\"assets/necklace-collection/1.jpg\">\n        <mat-radio-button value=\"1\" [checked]=true></mat-radio-button>\n      </div>\n      <div class=\"necklace-pic\">\n        <img src=\"assets/necklace-collection/2.jpg\">\n        <mat-radio-button value=\"2\"></mat-radio-button>\n      </div>\n      <div class=\"necklace-pic\">\n        <img src=\"assets/necklace-collection/3.jpg\">\n        <mat-radio-button value=\"3\"></mat-radio-button>\n      </div>\n    </mat-radio-group>\n  </ng-template>\n  <ng-template #stepTwo>\n    <div *ngIf=\"record\">\n      <video #video id=\"video\" width=\"videoWidth\" height=\"videoHeight\" autoplay muted playsinline [style.margin-left.px]=\"innerWidth\"></video>\n      <div id=\"instructions\">\n        <p>* We <b style=\"color:red;\">DO NOT</b>  store the video stream from your camera. It is solely used for clicking a picture.</p>\n        <p>* We <b style=\"color:red;\">DO NOT</b> store the captured picture.</p>\n        <p>* For <b style=\"color:blue;\">BEST</b> results, look straight at the camera(don't be too close or too far from the camera) with your <b style=\"color:blue;\">NECK VISIBLE</b> and <b style=\"color:blue;\">WELL LIT</b> sorroundings. Smile!</p>\n      </div>\n    </div>\n  </ng-template>\n  <ng-template #stepThree>\n    <div class=\"progressBar\" *ngIf=\"loading\"><mat-progress-bar mode=\"indeterminate\"></mat-progress-bar></div>\n    <div id=\"results\"  *ngIf=\"downloadPic\">\n      <div id=\"result-canvas\">\n        <canvas #canvas width=\"480\" height=\"640\"></canvas>\n        <div *ngIf=\"bigScreen; else shareOnMobile\">\n          <button mat-raised-button style=\"width:100%\" (click)=\"download()\">Download</button>\n        </div>\n        <ng-template #shareOnMobile>\n          <button mat-raised-button style=\"width:100%\" (click)=\"download()\">Share with friends!</button>\n        </ng-template>\n      </div>\n    </div>\n  </ng-template>\n  <mat-accordion>\n    <div *ngIf=\"bigScreen; else smallScreen\">\n      <mat-vertical-stepper (selectionChange)=\"stepperChange($event)\" linear=true  #stepper >\n        <mat-step label=\"Select Necklace\">\n          <ng-container *ngTemplateOutlet=\"stepOne\"></ng-container>\n        </mat-step>\n        <mat-step label=\"Snap photo\">\n          <button id=\"capture-btn\" mat-raised-button (click)=\"capture()\" matStepperNext>Capture</button>\n          <ng-container *ngTemplateOutlet=\"stepTwo\"></ng-container>\n        </mat-step>\n        <mat-step label=\"Results!\">\n          <ng-container *ngTemplateOutlet=\"stepThree\"></ng-container>\n        </mat-step>\n      </mat-vertical-stepper>\n    </div>\n    <ng-template #smallScreen>\n      <mat-horizontal-stepper (selectionChange)=\"stepperChange($event)\" linear=true labelPosition=\"bottom\" #stepper >\n        <mat-step label=\"Select Necklace\">\n          <ng-container *ngTemplateOutlet=\"stepOne\"></ng-container>\n          <div><button mat-button matStepperNext>Next</button></div>\n        </mat-step>\n        <mat-step label=\"Snap photo\">\n          <button id=\"capture-btn\" mat-raised-button (click)=\"capture()\" matStepperNext>Capture</button>\n          <ng-container *ngTemplateOutlet=\"stepTwo\"></ng-container>\n        </mat-step>\n        <mat-step label=\"Results!\">\n          <ng-container *ngTemplateOutlet=\"stepThree\"></ng-container>\n        </mat-step>\n      </mat-horizontal-stepper>\n    </ng-template>\n  </mat-accordion>\n  <div id=\"final-msg\">\n    <div id=\"user-text\">\n      <h2>Interested in learning more?</h2>\n      <h2>Leave your email and stay tuned!</h2>\n    </div>\n    <user-details (formSubmit)=\"onSignUp($event)\"></user-details>\n  </div>\n</div>\n<mat-toolbar id=\"privacy-policy\">\n  <a href=\"https://app.termly.io/document/privacy-policy/7f8bddd5-de63-4aac-aed9-36a9d9b069da\" target=\"_blank\">Privacy Policy</a>\n  <p>Copyright &copy; 2019, Nafaria</p>\n</mat-toolbar>\n"
+module.exports = "<mat-toolbar id=\"toolbar\">Nafaria</mat-toolbar>\n<div class=\"call\">\n  <img src=\"assets/woman.jpg\">\n  <div id=\"call-content\">\n    <h1>Wear Necklaces at home</h1>\n    <h2>Try before you buy</h2>\n  </div>\n</div>\n<mat-grid-list class=\"info\" cols=\"3\" rowHeight=\"15vw\">\n  <mat-grid-tile>\n    <div>\n      <a href=\"#necklace-options\" (click)=\"optionsClicked('Choose')\"><h1>Choose</h1></a>\n    </div>\n  </mat-grid-tile>\n  <mat-grid-tile>\n    <div>\n      <a href=\"#necklace-options\" (click)=\"optionsClicked('Wear')\"><h1>Wear</h1></a>\n    </div>\n  </mat-grid-tile>\n  <mat-grid-tile>\n    <div>\n      <a href=\"#necklace-options\" (click)=\"optionsClicked('Buy')\"><h1>Buy</h1></a>\n    </div>\n  </mat-grid-tile>\n</mat-grid-list>\n<div class=\"pane\">\n  <ng-template #stepOne>\n    <mat-radio-group id=\"necklace-options\" (change)=\"selectionChange($event)\">\n      <div class=\"necklace-pic\">\n        <img src=\"assets/necklace-collection/1.jpg\">\n        <mat-radio-button value=\"1\" [checked]=true></mat-radio-button>\n      </div>\n      <div class=\"necklace-pic\">\n        <img src=\"assets/necklace-collection/2.jpg\">\n        <mat-radio-button value=\"2\"></mat-radio-button>\n      </div>\n      <div class=\"necklace-pic\">\n        <img src=\"assets/necklace-collection/3.jpg\">\n        <mat-radio-button value=\"3\"></mat-radio-button>\n      </div>\n    </mat-radio-group>\n  </ng-template>\n  <ng-template #stepTwo>\n    <div *ngIf=\"record\">\n      <video #video id=\"video\" width=\"videoWidth\" height=\"videoHeight\" autoplay muted playsinline [style.margin-left.px]=\"innerWidth\"></video>\n      <div id=\"instructions\">\n        <p>* We <b style=\"color:red;\">DO NOT</b>  store the video stream from your camera. It is solely used for clicking a picture.</p>\n        <p>* We <b style=\"color:red;\">DO NOT</b> store the captured picture.</p>\n        <p>* For <b style=\"color:blue;\">BEST</b> results, look straight at the camera(don't be too close or too far from the camera) with your <b style=\"color:blue;\">NECK VISIBLE</b> and <b style=\"color:blue;\">WELL LIT</b> sorroundings. Smile!</p>\n      </div>\n    </div>\n  </ng-template>\n  <ng-template #stepThree>\n    <div class=\"progressBar\" *ngIf=\"loading\"><mat-progress-bar mode=\"indeterminate\"></mat-progress-bar></div>\n    <div id=\"results\"  *ngIf=\"downloadPic\">\n      <div id=\"result-canvas\">\n        <canvas #canvas width=\"480\" height=\"640\"></canvas>\n        <div *ngIf=\"bigScreen; else shareOnMobile\">\n          <button mat-raised-button style=\"width:100%\" (click)=\"download()\">Download</button>\n        </div>\n        <ng-template #shareOnMobile>\n          <button mat-raised-button style=\"width:100%\" (click)=\"download()\">Share with friends!</button>\n        </ng-template>\n      </div>\n    </div>\n  </ng-template>\n  <mat-accordion>\n    <div *ngIf=\"bigScreen; else smallScreen\">\n      <mat-vertical-stepper (selectionChange)=\"stepperChange($event)\" linear=true  #stepper >\n        <mat-step label=\"Select Necklace\">\n          <ng-container *ngTemplateOutlet=\"stepOne\"></ng-container>\n        </mat-step>\n        <mat-step label=\"Snap photo\">\n          <button id=\"capture-btn\" mat-raised-button (click)=\"capture()\" matStepperNext>Capture</button>\n          <ng-container *ngTemplateOutlet=\"stepTwo\"></ng-container>\n        </mat-step>\n        <mat-step label=\"Results!\">\n          <ng-container *ngTemplateOutlet=\"stepThree\"></ng-container>\n        </mat-step>\n      </mat-vertical-stepper>\n    </div>\n    <ng-template #smallScreen>\n      <mat-horizontal-stepper (selectionChange)=\"stepperChange($event)\" linear=true labelPosition=\"bottom\" #stepper >\n        <mat-step label=\"Select Necklace\">\n          <ng-container *ngTemplateOutlet=\"stepOne\"></ng-container>\n          <div><button mat-button matStepperNext>Next</button></div>\n        </mat-step>\n        <mat-step label=\"Snap photo\">\n          <button id=\"capture-btn\" mat-raised-button (click)=\"capture()\" matStepperNext>Capture</button>\n          <ng-container *ngTemplateOutlet=\"stepTwo\"></ng-container>\n        </mat-step>\n        <mat-step label=\"Results!\">\n          <ng-container *ngTemplateOutlet=\"stepThree\"></ng-container>\n        </mat-step>\n      </mat-horizontal-stepper>\n    </ng-template>\n  </mat-accordion>\n  <div id=\"final-msg\">\n    <div id=\"user-text\">\n      <h2>Interested in learning more?</h2>\n      <h2>Leave your email and stay tuned!</h2>\n    </div>\n    <user-details (formSubmit)=\"onSignUp($event)\"></user-details>\n  </div>\n</div>\n<mat-toolbar id=\"privacy-policy\">\n  <a href=\"https://app.termly.io/document/privacy-policy/7f8bddd5-de63-4aac-aed9-36a9d9b069da\" target=\"_blank\">Privacy Policy</a>\n  <p>Copyright &copy; 2019, Nafaria</p>\n</mat-toolbar>\n"
 
 /***/ }),
 
@@ -177,6 +177,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material_radio__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @angular/material/radio */ "./node_modules/@angular/material/esm2015/radio.js");
 /* harmony import */ var _angular_material_input__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @angular/material/input */ "./node_modules/@angular/material/esm2015/input.js");
 /* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @angular/material/snack-bar */ "./node_modules/@angular/material/esm2015/snack-bar.js");
+/* harmony import */ var angular_gtag__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! angular-gtag */ "./node_modules/angular-gtag/esm2015/angular-gtag.js");
+
 
 
 
@@ -230,6 +232,7 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _angular_material_radio__WEBPACK_IMPORTED_MODULE_21__["MatRadioModule"],
             _angular_material_input__WEBPACK_IMPORTED_MODULE_22__["MatInputModule"],
             _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_23__["MatSnackBarModule"],
+            angular_gtag__WEBPACK_IMPORTED_MODULE_24__["GtagModule"].forRoot({ trackingId: 'UA-147371517-1', trackPageviews: true }),
         ],
         providers: [],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]],
@@ -369,6 +372,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material/dialog */ "./node_modules/@angular/material/esm2015/dialog.js");
 /* harmony import */ var _error_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./error_dialog */ "./src/app/necklace/error_dialog.ts");
 /* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/snack-bar */ "./node_modules/@angular/material/esm2015/snack-bar.js");
+/* harmony import */ var angular_gtag__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! angular-gtag */ "./node_modules/angular-gtag/esm2015/angular-gtag.js");
+
 
 
 
@@ -379,6 +384,9 @@ const ERR_STR = "Sorry! Couldn't fit the necklace. Things you can try: " +
     "1. Improve lighting conditions " +
     "2. Make the neck more visible " +
     "3. Try to be in the middle of the picture.";
+// Event Category used for Google Analytics.
+const CLICK_CATEGORY = "Click";
+const ENGAGEMENT_CATEGORY = "engagement";
 const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
@@ -404,11 +412,12 @@ const parseURL = (url) => {
     return url.split("/").slice(0, 3).join("/");
 };
 let NecklaceComponent = class NecklaceComponent {
-    constructor(changeDetectorRef, http, dialog, _snackBar) {
+    constructor(changeDetectorRef, http, dialog, _snackBar, gtag) {
         this.changeDetectorRef = changeDetectorRef;
         this.http = http;
         this.dialog = dialog;
         this._snackBar = _snackBar;
+        this.gtag = gtag;
         this.record = false;
         this.loading = false;
         this.downloadPic = false;
@@ -457,7 +466,23 @@ let NecklaceComponent = class NecklaceComponent {
                 this.record = true;
                 this.changeDetectorRef.detectChanges();
                 this.video.nativeElement.srcObject = stream;
+                this.gtag.event('record_video', {
+                    event_category: CLICK_CATEGORY,
+                    event_label: 'User consented to record',
+                });
             }).catch((err) => { this.showError("Error in access to camera: " + err.toString()); });
+        }
+        else if (!navigator.mediaDevices) {
+            this.gtag.event('reject_video', {
+                event_category: CLICK_CATEGORY,
+                event_label: 'Media Device does not exist',
+            });
+        }
+        else {
+            this.gtag.event('reject_video', {
+                event_category: CLICK_CATEGORY,
+                event_label: 'User rejected permission to record',
+            });
         }
     }
     disableDemo() {
@@ -473,6 +498,10 @@ let NecklaceComponent = class NecklaceComponent {
         return csrfToken;
     }
     capture() {
+        this.gtag.event('snap_photo', {
+            event_category: CLICK_CATEGORY,
+            event_label: 'Captured user picture',
+        });
         const tempCanvas = document.createElement('canvas');
         tempCanvas.width = 480;
         tempCanvas.height = 640;
@@ -509,11 +538,19 @@ let NecklaceComponent = class NecklaceComponent {
                 }, 100);
             }, err => {
                 this.loading = false;
-                this.showError(ERR_STR);
+                this.showError("Sorry! Our server encountered an error during processing. Please try again.");
+                this.gtag.event('detection_error', {
+                    event_category: ENGAGEMENT_CATEGORY,
+                    event_label: 'Server error during image processing',
+                });
             });
         }, err => {
             this.loading = false;
-            this.showError(ERR_STR);
+            this.showError("Request to our server did not go through. Check your internet connection and try again.");
+            this.gtag.event('csrf_token_error', {
+                event_category: ENGAGEMENT_CATEGORY,
+                event_label: 'GET request failed for CSRF token',
+            });
         });
     }
     download() {
@@ -539,6 +576,10 @@ let NecklaceComponent = class NecklaceComponent {
     }
     selectionChange(event) {
         this.selectedNecklace = event.value;
+        this.gtag.event('necklace_selection_change', {
+            event_category: CLICK_CATEGORY,
+            event_label: this.selectedNecklace,
+        });
     }
     onSignUp(event) {
         this.http.get(this.signUpURL, { responseType: 'text' }).subscribe(resp => {
@@ -558,12 +599,19 @@ let NecklaceComponent = class NecklaceComponent {
             });
         });
     }
+    optionsClicked(nav) {
+        this.gtag.event('page_navigation_clicked', {
+            event_category: CLICK_CATEGORY,
+            event_label: nav,
+        });
+    }
 };
 NecklaceComponent.ctorParameters = () => [
     { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"] },
     { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] },
     { type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_3__["MatDialog"] },
-    { type: _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_5__["MatSnackBar"] }
+    { type: _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_5__["MatSnackBar"] },
+    { type: angular_gtag__WEBPACK_IMPORTED_MODULE_6__["Gtag"] }
 ];
 tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])("video", { static: false })
