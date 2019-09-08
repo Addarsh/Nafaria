@@ -510,6 +510,7 @@ let NecklaceComponent = class NecklaceComponent {
                     'X-CSRFToken': this.getCSRFToken(resp),
                 }),
             };
+            const startTime = Date.now();
             this.http.post(this.imageURL, {
                 "necklace": this.selectedNecklace,
                 "data": tempCanvas.toDataURL("image/png"),
@@ -540,6 +541,11 @@ let NecklaceComponent = class NecklaceComponent {
                     event_category: ENGAGEMENT_CATEGORY,
                     event_label: 'Neck overlay success',
                     value: resp["size"],
+                });
+                this.gtag.event('detection_time', {
+                    event_category: ENGAGEMENT_CATEGORY,
+                    event_label: 'Succesful Necklace Overlay time',
+                    value: Date.now() - startTime,
                 });
                 this.downloadPic = true;
                 const checkCanvas = setInterval(() => {
