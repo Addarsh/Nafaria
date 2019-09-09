@@ -26,6 +26,9 @@ if 'RDS_HOSTNAME' not in os.environ:
   # SECURITY WARNING: don't run with debug turned on in production!
   DEBUG = True
 
+# 10 MB of memory.
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760
+
 ALLOWED_HOSTS = [
   "localhost",
   "nefaria-env.fbtffkbpmf.us-west-2.elasticbeanstalk.com",
